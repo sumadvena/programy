@@ -1,4 +1,4 @@
-#include "std_lib_facilities.h"
+#include <iostream>
 
 int main() {
     double d = 0;
