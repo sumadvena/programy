@@ -1,0 +1,91 @@
+         Tausworth based random number generator
+
+                 The programmer manual
+
+Contents
+========
+
+1. Introduction
+
+2. Contents of the program folder
+
+3. Instructions
+
+
+1. Introduction
+===============
+
+This tausworth based random number generator was originally developed
+by Glenn Rhoad (http://remus.rutgers.edu/~rhoads/Code/code.html).
+
+Further modifications have been made by Dr. Raul N. Shakirov
+(http://imach.uran.ru/rns).
+
+This software is public available source. Permission has been
+granted to copy, distribute and modify software in any context
+without fee, including a commercial application, provided that
+you made exhaustive description of changes in user-support
+documentation.
+
+Author ensures that he has secured all necessary consents
+and approvals to use third party intellectual property
+rights for this software.
+
+Author confirms that this software does not contain parts,
+which are intended for the purposes, others than central
+purpose announced in the software documentation.
+
+THIS SOFTWARE IS PROVIDED "AS IS". NO WARRANTY OF ANY KIND
+IS EXPRESSED OR IMPLIED. YOU USE AT YOUR OWN RISK. THE
+AUTHOR WILL NOT BE LIABLE FOR DATA LOSS, DAMAGES, LOSS OF
+PROFITS OR ANY OTHER KIND OF LOSS WHILE USING OR MISUSING
+THIS SOFTWARE.
+
+
+2. Contents of the program folder
+=================================
+
+   Random3.c    - source
+   Random3.h    - header file
+   Random3.txt  - the programmer manual (eng)
+   Random3r.txt - the programmer manual (rus)
+
+
+3. Instructions
+===============
+
+1.  Copy to the project folder the following files:
+        Random3.c
+        Random3.h
+
+2.  Include to the project the following file:
+        Random3.c
+
+3.  Insert into the source text the following directive:
+        #include "Random3.h"
+
+4.  Random generator must be initialized by the following function:
+        RRand3()
+    Initial set of RRand3 depends on system time, for another
+    initial set use alternative initialization function:
+        SRand3 (a,b,c)
+    providing that a, b, c are 32 bit unsigned long random values.
+
+5.  Use the following function to generate 32 bit unsigned long
+    random value:
+        Rand3();
+
+6.  Use the following function to generate unsigned long random
+    value in a range 0..ULONG_MAX:
+        lRand3();
+    Random value is either 32 or 64 bit depending of target system.
+
+7.  Use the following function to generate double random value
+    in a range 0..1, including 0 and NOT including 1:
+        dRand3();
+
+
+Aug 28, 2006 - First release.
+
+Jun 28, 2009 - Optimization and correction for compatibility with
+               64 and more bit compilers.

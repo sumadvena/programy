@@ -1,0 +1,8 @@
+g++ -m32 Arifexp.cpp Cbignum.cpp Cbignumf.cpp Cbignums.cpp Ctty.cpp Exarray.cpp Gettimer.c Random3.c -o Arifexp
+g++ -m32 Matrix.cpp Cbignum.cpp Cbignumf.cpp Cbignums.cpp Exarray.cpp Gettimer.c -o Matrix
+g++ -m32 Miller.cpp Cbignum.cpp Cbignumf.cpp Cbignums.cpp Ctty.cpp Exarray.cpp Gettimer.c Prime.cpp -o Miller
+case $MACHTYPE in (x86_64*)
+g++ -D_CBIGNUM_HARDWARE_DIV Arifexp.cpp Cbignum.cpp Cbignumf.cpp Cbignums.cpp Ctty.cpp Exarray.cpp Gettimer.c Random3.c -o Arifexp64
+g++ -D_CBIGNUM_HARDWARE_DIV Matrix.cpp Cbignum.cpp Cbignumf.cpp Cbignums.cpp Exarray.cpp Gettimer.c -o Matrix64
+g++ -D_CBIGNUM_HARDWARE_DIV Miller.cpp Cbignum.cpp Cbignumf.cpp Cbignums.cpp Ctty.cpp Exarray.cpp Gettimer.c Prime.cpp -o Miller64
+;;esac

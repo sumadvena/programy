@@ -12,12 +12,12 @@ void choice() {
 		else {
 			switch (x) {
 				case 1:
-					std::cout << dist << " to ";
+					std::cout << dist << "km, to ";
 					dist *= 0.621371192;
 					std::cout << dist <<" mil\n";
 					break;
 				case 2:
-					std::cout << dist << " to ";
+					std::cout << dist << "mil, to ";
 					dist *= 1.609344;
 					std::cout << dist << " km\n";
 					break;
@@ -34,6 +34,7 @@ void writeDistance() {
 		std::cin >> dist;
 		if (dist <= 0) {
 			std::cout << "Zła odległość, wpisz jeszcze raz: ";
+			writeDistance();
 		}
 		else {
 			std::cout << '\n' << "Co chcesz przeliczyć?\n" << '\n' 

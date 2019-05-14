@@ -2,7 +2,7 @@
 
 int main() {
 
-    int number_of_words = 0;
+    int number_of_words{0};
     std::string previous = " ";
     std::string current;
 

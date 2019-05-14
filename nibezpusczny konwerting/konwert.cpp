@@ -1,7 +1,7 @@
 #include <iostream>
 
 int main() {
-    double d = 0;
+    double d;
     
     std::cout << "Wpisz liczbę: \n";
 
@@ -9,9 +9,9 @@ int main() {
         int i = d;
         char c = i;
         int i2 = c;
-        std::cout << "d==" << d
-         << " i==" << i
-         << " i2==" << i2
-         << " char(" << c << ")\n";
+        std::cout << "d == " << d
+         << " i == " << i
+         << " i2 == " << i2
+         << " char( " << c << " )\n";
     }
 }

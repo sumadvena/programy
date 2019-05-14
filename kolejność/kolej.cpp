@@ -4,8 +4,8 @@
 
 int main() {
     std::array<double, 3> numbers;
-    int i;
-    for (i = 0; i < 3; i++) {
+    int i{};
+    for (i; i < 3; i++) {
         std::cout << "Wpisz liczbę: ";
         std::cin >> numbers[i];
     }

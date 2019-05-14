@@ -3,8 +3,8 @@
 
 int main() {
 
-    string previous = " ";
-    string current;
+    std::string previous{" "};
+    std::string current;
 
     std::cout << "Pisz zdania: \n";
 

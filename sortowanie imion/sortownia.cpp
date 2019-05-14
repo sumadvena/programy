@@ -5,7 +5,7 @@
 
 int main() {
     std::array<std::string, 3> names; // tablica, w której będą przechowywane imiona
-    int i = 0;
+    int i{};
      for (i; i < 3; i++) { // pętla wczytująca imiona
         std::cout << "Wpisz imię: " << names[i];
         std::cin >> names[i];

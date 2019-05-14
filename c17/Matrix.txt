@@ -1,0 +1,33 @@
+The instruction on start of program for multiplication of square matrixes.
+
+Call:   Matrix Infile Outfile
+
+Infile is name of input text file:
+    Dimension
+    Matrix1
+    Matrix2
+Line breaks are arbitrary.
+Missing values means zero.
+
+For Example:
+5
+
+1 2 3 4 5
+1 2 3 4 5
+1 2 3 4 5
+1 2 3 4 5
+1 2 3 4 5
+
+1 2 3 4 5
+1 2 3 4 5
+1 2 3 4 5
+1 2 3 4 5
+1 2 3 4 5
+
+Outfile is name of output text file for the result of multiplication.
+
+Program returns the following codes:
+    0 - success
+  255 - error detected
+
+Site:   http://www.imach.uran.ru/cbignum

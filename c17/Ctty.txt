@@ -1,0 +1,406 @@
+     C++ class for compiler independent stream output
+
+                     (version 2.0)
+
+                 The programmer manual
+
+Contents
+========
+
+1. Introduction
+
+2. Contents of the program folder
+
+3. Instructions
+
+3.1. Using of class cTTY
+3.2. Methods for generic formatting of string and numbers
+3.3. Methods for predefined formatting of string and numbers
+3.4. Supporting functions and definitions
+3.5. Specification of handler function
+3.6. Pointer to handler function
+
+Appendix 1. Summary of methods
+
+Appendix 2. Known issues
+
+Appendix 3. What's new
+
+
+1. Introduction
+===============
+
+Class cTTY provides for restricted stream output which is independent
+of implementation of iostream library. Program code that uses cTTY
+class must not include either iostream or iostream.h header file.
+By default, no output is performed unless class is explicitly
+initialized in application.
+
+The following copyright statement describes authorship of
+the software.
+
+(C) Copyright 2005-2010 by Dr. Raul N. Shakirov, IMach of RAS (UB).
+
+This source code is distributed as "Public domain", that is
+permission has been granted to copy, distribute and modify
+software in any context without fee, including a commercial
+application, provided that the aforesaid copyright statement
+is present in user-accessible supporting documentation,
+as well as exhaustive description of changes.
+
+This does not affect your ownership of the derived work
+itself, and the intent is to assure proper credit for the
+authors of this software, not to interfere with your
+productive use of this software. "Derived works" includes
+all programs that utilize this software. Credit must be
+given in user-accessible documentation.
+
+Author ensures that he has secured all necessary consents
+and approvals to use third party intellectual property
+rights for this software.
+
+Author confirms that this software does not contain parts,
+which are intended for the purposes, others than central
+purpose announced in the software documentation.
+
+THIS SOFTWARE IS PROVIDED "AS IS". NO WARRANTY OF ANY KIND
+IS EXPRESSED OR IMPLIED. YOU USE AT YOUR OWN RISK. THE
+AUTHOR WILL NOT BE LIABLE FOR DATA LOSS, DAMAGES, LOSS OF
+PROFITS OR ANY OTHER KIND OF LOSS WHILE USING OR MISUSING
+THIS SOFTWARE.
+
+
+2. Contents of the program folder
+=================================
+
+   Cbnl.h       - declarations for compiler detection
+   Cios.h       - declarations for standard stream input-output
+   Ctty.cpp     - handler functions for independent stream output
+   Ctty.h       - class for compiler independent stream output
+   Ctty.txt     - the programmer manual for independent output (eng)
+   Cttyr.txt    - the programmer manual for independent output (rus)
+
+
+3. Instructions
+===============
+
+1.  Copy to the project folder the following files:
+        Cbnl.h
+        Cios.h       (option)
+        Ctty.cpp     (option)
+        Ctty.h
+
+2.  Include to the project the following file:
+        Ctty.cpp     (option)
+
+3.  Insert into the source text the following directive:
+        #include "Ctty.h"
+
+
+3.1. Using of class cTTY
+------------------------
+
+1.  Console stream is declared as:
+        cTTY os;
+
+2.  To operate, object must be initialized by either another
+    instance of class or handler function:
+        cTTY_StandardOutput - for output to cout;
+        cTTY_ProgressOutput - for output to cerr;
+        NULL                - no output (default)
+
+    For example:
+        cTTY os = cTTY_StandardOutput;
+        ...
+        cTTY os2 = os;
+
+    NOTE: cTTY handler functions are defined in Ctty.cpp.
+          You must include this file to project to use them.
+
+3.  The class provides for insertion of characters, character
+    strings, and signed long numbers.
+
+    For example:
+        os << "Number " << 5;
+
+    Insertion operation for other objects which cannot by
+    automatically converted to the aforementioned ones,
+    must be defined explicitly.
+
+    NOTE: Class does not provide support for support stream
+          modifiers. Instead, it has some methods for formatting
+          described below in Sections 3.2, 3.3.
+
+4.  Special handling is provided for insertion of symbol \r,
+    which is treated as "complete output" mark.
+
+    For cTTY_StandardOutput, each insertion of \r to non-empty line
+    starts new line and flushes output. If line is empty, \r does
+    nothing.
+
+    For cTTY_ProgressOutput, each insertion of \r clears line right
+    to cursor, returns cursor to begin of line and flushes output.
+
+    For example:
+        os << "Number " << 5 << '\r';
+        os << "Number " << 5 << " passed\r";
+
+5.  Class also flushes output after put of \n or an insertion
+    of either '\0' or empty siring "".
+
+    For example:
+        os << "Number " << 5 << "";
+        ...
+        os << " passed\n";
+
+6.  Operator <<= inserts argument and appends \r.
+
+    This operator can be used to reduce code, for example:
+        os << "Number " <<= 5;
+
+    NOTE: It is not possible chain insertions after <<=.
+
+7.  Several cTTY objects cat work simultaneously. Any
+    insertion to cTTY_StandardOutput automatically clears
+    current line of cTTY_ProgressOutput.
+
+8.  On destruction cTTY object automatically completes output
+    using same rules as for insertion of \r.
+
+
+3.2. Methods for generic formatting of string and numbers
+---------------------------------------------------------
+
+Methods provide for output of commentary string and numbers
+with custom formatting options.
+
+Method put() returns stream for chained output.
+
+Method show() does not return stream for chained output.
+Instead, is appends \r to complete output.
+
+   os.put  (s,n)        Put string s, space and number n.
+   os.show (s,n)        For example:    Test 100
+                                        Test 1000
+                                        Test 10000
+
+   os.put  (s,n,m)      Put string s, space and numbers n of m.
+   os.show (s,n,m)      For example:    Test 100 of 200
+                                        Test 1000 of 2000
+                                        Test 10000 of 20000
+                        NOTE: Part "of m" is not put if m = 0.
+
+   os.put  (s,n,m,o)    Put string s and numbers under options o.
+   os.show (s,n,m,o)    NOTE: Part "of m" is not put if m = 0.
+                              Numbers are not put, if n = m = 0 and no
+                              cTTY_num... options are set to be non-0.
+
+Valid options are any of following, combined by either | or + operator:
+
+   cTTY_strwidth (n)    Pad string to size n to reserve extra space
+                        for number.
+                        NOTE: If either s is NULL or no numbers are
+                              put, string is not pad.
+
+   cTTY_numspace        Keep and least one space before each number.
+                        NOTE: This option is enabled for reduced
+                              argument set (s,n) or (s,n,m).
+
+   cTTY_numscale        Round numbers to max 4 high digits with
+                        scale suffix K,M,G,T,P.
+
+   cTTY_numpercent      Put n% or rounded percent ratio 100*n/m%.
+
+   cTTY_numwidth (n)    Right-align each number to specified width.
+                        If n = 0 or 1, numbers are left-aligned.
+
+   'c'                  Append character c. This is valid for put()
+                        only, because show() appends \r internally.
+
+NOTE: Rounding is performed to the nearest integer.
+
+For example of applying of options look Section 3.3.
+
+
+3.3. Methods for predefined formatting of string and numbers
+------------------------------------------------------------
+
+Methods provide for output of commentary string and numbers
+with predefined formatting.
+
+String is right-expanded with blanks to 12 characters, except for case
+when first argument is NULL - this meant that no string must be put.
+
+Numbers are right-aligned to predefined number of digits. If number
+has more digits it first expands to left until all reserved space is
+exhausted, then it expands to right.
+
+Methods put...() return stream for chained output.
+
+Methods show...() do not return stream for chained output.
+Instead, is appends \r to complete output.
+
+  os.putSpaced  (s,n)   Put padded string s, space and number n.
+  os.showSpaced (s,n)   For example:    Test         100
+                                        TestTest     1000
+                                        TestTestTest 10000
+
+  os.putSpaced  (s,n,m) Put padded string s, space and numbers n of m.
+  os.showSpaced (s,n,m) For example:    Test         100 of 200
+                                        TestTest     1000 of 2000
+                                        TestTestTest 10000 of 20000
+                        NOTE: Part "of m" is not put if m = 0.
+
+  os.putScaled  (s,n)   Put padded string s and 1-4 digit signed number n
+  os.showScaled (s,n)   or for greater values 2-4 rounded high digits
+                        with suffix K = 1024, M = 1024K etc.
+                        For example:    Test          100
+                                        TestTest     1000
+                                        TestTestTest   10K
+
+  os.putScaled  (s,n,m) Put padded string s and 1-4 digit numbers n of m
+  os.showScaled (s,n,m) or for greater values 0-4 rounded high digits
+                        with appropriate suffix K,M,G,T,P after m.
+                        For example:    Test          100 of  200
+                                        TestTest     1000 of 2000
+                                        TestTestTest   10 of   20K
+                        NOTE: Part "of m" is not put if m = 0.
+
+  os.putPercent (s,n)   Put padded string s and number n%.
+  os.showPercent(s,n)   For example:    Test           1%
+                                        TestTest      10%
+                                        TestTestTest 100%
+
+  os.putPercent (s,n,m) Put padded string s and rounded ratio 100*n/m%.
+  os.showPercent(s,n,m) For example:    Test           1%
+                                        TestTest      10%
+                                        TestTestTest 100%
+                        NOTE: Method put n% if m = 0 or m = 100.
+
+NOTE: Rounding is performed to the nearest integer.
+
+
+3.4. Supporting functions and definitions
+-----------------------------------------
+
+Global function cTTY_SetMaxOutput() allows to change format for
+output of m, for example:
+   cTTY_SetMaxOutput  (" (", ")");      // output as "n (m)"
+   cTTY_SetMaxOutput  (" of","");       // output as "n of m"
+
+Global constants:
+   cTTY_numscaleK       Minimal number which scaling algorithm
+                        rounds with suffix. This is 0x2600L = 9728L,
+                        lower numbers are not rounded.
+   cTTY_numscaleM       Threshold for mega.
+   cTTY_numscaleG       Threshold for giga.
+   cTTY_numscaleT       Threshold for tera.
+   cTTY_numscaleP       Threshold for peta.
+
+
+3.5. Specification of handler function
+--------------------------------------
+
+Handler function is extern "C" and has the following parameters:
+   void*        to cTTY object or NULL
+   const char*  to string or NULL
+   long         first number
+   long         second number or 0
+   long         options and character
+
+First parameter is used to distinguish output of various cTTY objects,
+for description of other parameters look method put() in Section 3.2.
+
+Handler function must return 0, other return codes are reserved
+for future extensions.
+
+
+3.6. Pointer to handler function
+--------------------------------
+
+Pointer to handler function has type cTTY_h.
+
+You can initialize or assign this pointer from cTTY object:
+    cTTY_h ph = os;
+
+And then call handler function directly providing that it is not NULL:
+    if (ph) (*ph) (&os, s, n, m, o);
+
+
+3.7. Preprocessing options
+--------------------------
+
+    _CTTY_R     use '\r' instead of '\b' to return cursor in
+                cTTY_ProgressOutput
+
+   NOTE:    This option do not change visual output if
+            cTTY_ProgressOutput always works from begin of line.
+            It is necessary for Pocket PC console, which does
+            not understand '\b'.
+
+
+Appendix 1. Summary of methods
+==============================
+
+                    char*  long  char
+--------------------------------------
+   os <<              +     +     +
+   os <<=             +     +     +
+   os.put()           +    + +    +
+   os.putSpaced()     +    + +
+   os.putScaled()     +    + +
+   os.putScaled()     +    + +
+   os.putPercent()    +    + +
+   os.show()          +    + +
+   os.putSpaced()     +    + +
+   os.putScaled()     +    + +
+   os.putScaled()     +    + +
+   os.putPercent()    +    + +
+
+
+Appendix 2. Known issues
+========================
+
+
+Appendix 3. What's new
+======================
+
+Sep  5, 2006 - Version 1.2 beta internal
+
+
+Nov 29, 2006 - Version 1.2 beta public
+
+
+Apr 30, 2007 - Version 1.2a beta internal
+
+- Compatibility with GNU g++ 4.1.
+
+
+Jun 18, 2007 - Version 1.2a beta public
+
+- FIXED: Handler function resets width field of its output
+         stream to zero.
+
+
+Jul 28, 2009 - Version 1.2b public
+
+- Preprocessing option _CTTY_R for compatibility with Pocket PC.
+
+- Beta test is finished.
+
+
+Dec 29, 2009 - Documentation update
+
+
+Jul 28, 2010 - Version 1.2c public
+
+- FIXED: Warning in 64-bit compatibility check.
+
+
+Aug  7, 2010 - Version 2.0 public
+
+- Use type CBNL instead of long defined in Cbnl.h to handle
+  64-bit numbers under Visual C++ in 64-bit mode.
+
+
+Aug  7, 2010
