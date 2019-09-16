@@ -2,7 +2,7 @@
 
 int main() {
     int silnik{};   // silnik silni
-    unsigned long long wynik{1};
+    uint_fast64_t wynik{1};
     std::cout << "Wprowadź liczbę, której silnia zostanie obliczona: ";
     std::cin >> silnik;
 
