@@ -1,8 +1,12 @@
-# programy
+# Programy
 
-## UWAGA
+### UWAGA
 
-programy w repozytorium w większośći nie są odporne na
+Programy w repozytorium w większośći nie są odporne na
 nieprawidłowy input - mogą przestać działać itp.
 
-### NIEKTÓRE PROGRAMY NIE SĄ DOKOŃCZONE!!!
+Owe programy dzielą się na dwie grupy:
+    * jakieś syfy bez przyszłości wykonane tylko jako ćwiczenia
+    * amatorsko potężne matematyczne programy, za które na pewno dostanę nobla
+
+#### NIEKTÓRE PROGRAMY NIE SĄ DOKOŃCZONE!
