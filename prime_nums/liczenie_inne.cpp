@@ -4,7 +4,7 @@
 
 void liczonko (uint_fast64_t zakres_beg, uint_fast64_t zakres_end) {
     std::ofstream primes;
-    primes.open ("prn.txt");
+    primes.open ("pnums.txt");
     std::ofstream perfects;
     std::vector<uint_fast64_t> dzielniki;
     uint_fast64_t liczba = zakres_beg;
@@ -20,18 +20,13 @@ void liczonko (uint_fast64_t zakres_beg, uint_fast64_t zakres_end) {
             }
         }
         if (dzielniki.size() == 2) {
-                //std::ofstream primes;
-                //dzielniki.push_back(liczba);
-                //primes.open ("prn.txt");
                 primes << '\n' << liczba << '\n';
-               // primes.close();
         }
 
         dzielniki.clear();
         std::cout << '\n';
         zakres_beg++;
     }
-    //primes << "___________\n\n";
     primes.close();
 }
 
